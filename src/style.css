@@ -1,0 +1,18 @@
+@import '@wikimedia/codex/dist/codex.style.css';
+
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  font-family: var(--font-family-base, sans-serif);
+  font-size: var(--font-size-base, 14px);
+  line-height: var(--line-height-base, 1.5);
+  color: var(--color-text, #222);
+}
+
+#reset {
+  position: absolute;
+  top: 0;
+  right: 3px;
+}
