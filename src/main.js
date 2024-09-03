@@ -102,8 +102,8 @@ function initMode( mode = 0, algorithm = 0 ) {
     }
 }
 
-const algorithm = localStorage.getItem('algorithm') || '0';
-const gamepack = localStorage.getItem('gamepack') || '0';
+const algorithm = localStorage.getItem('algorithm') || '3';
+const gamepack = localStorage.getItem('gamepack') || '1';
 const urlTitles = urlParams.getAll('t');
 
 if ( urlTitles.length ) {
