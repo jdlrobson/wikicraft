@@ -28,8 +28,12 @@ const init = ( initialPages, wantedList, algorithm = '0' ) => {
 const pagesToTitles = ( pages ) => pages.map(({title}) => title );
 
 function initFromInitialPages( initialPages, algorithm ) {
-    api.moreLike(initialPages, algorithm).then((pages) => {
-        init( initialPages, pagesToTitles( pages ), algorithm );
+    const jumbled = initialPages.sort(() => Math.random() < 0.5 ? -1 : 1);
+    Promise.all( [
+        api.moreLike(jumbled.slice(0,2), algorithm),
+        api.moreLike(jumbled.slice(2), algorithm)
+    ] ).then((a) => {
+        init( initialPages, pagesToTitles( [].concat.apply([], a) ), algorithm );
     })
 }
 
