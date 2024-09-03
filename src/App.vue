@@ -126,9 +126,9 @@ const loadSummary = ( title ) => {
     });
 }
 
-function moreLike(titles) {
+function moreLike(titles, algorithm) {
   fetchInProgress.value = true;
-  return api.moreLike( titles ).then(( moreLikePages ) => {
+  return api.moreLike( titles, algorithm ).then(( moreLikePages ) => {
     fetchInProgress.value = false;
     return moreLikePages;
   });
@@ -216,6 +216,10 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    algorithm: {
+      type: String,
+      default: '0'
+    },
     initialScore: {
       type: Number,
       default: 0
@@ -245,7 +249,7 @@ export default defineComponent({
       board.value = [];
     },
     combine() {
-      moreLike(board.value).then((moreLikePages) => {
+      moreLike(board.value, this.algorithm).then((moreLikePages) => {
           const newTitle = moreLikePages[0].title;
           if ( newTitle ) {
             pushToBoard( newTitle, true );

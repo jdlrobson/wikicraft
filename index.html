@@ -11,7 +11,19 @@
     <div id="app">
       Loading game!
     </div>
-    <a id="reset">reset experiment</a>
+    <form id="reset" style="display: none">
+      <select name="mode">
+        <option value="0" selected>Zeus</option>
+        <option value="1">Elements</option>
+        <option value="2">Yesterday most read</option>
+        <option value="3">Last month most read</option>
+      </select>
+      <select name="algorithm">
+        <option value="0" selected>morelike</option>
+        <option value="1">popular</option>
+      </select>
+      <input type="submit" value="reset">
+    </form>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
