@@ -102,7 +102,7 @@ const algorithm = localStorage.getItem('algorithm') || '0';
 const gamepack = localStorage.getItem('gamepack') || '0';
 const urlTitles = urlParams.getAll('t');
 
-if ( urlTitles ) {
+if ( urlTitles.length ) {
     initFromInitialPages( urlTitles, algorithm);
 } else if ( notFoundLocal && pagesLocal ) {
     init( JSON.parse( pagesLocal ), JSON.parse( notFoundLocal ) );
