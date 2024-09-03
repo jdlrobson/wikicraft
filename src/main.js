@@ -28,15 +28,15 @@ const init = ( initialPages, wantedList, algorithm = '0' ) => {
 const pagesToTitles = ( pages ) => pages.map(({title}) => title );
 
 function initFromInitialPages( initialPages, algorithm ) {
-    api.moreLike(initialPages).then((pages) => {
+    api.moreLike(initialPages, algorithm).then((pages) => {
         init( initialPages, pagesToTitles( pages ), algorithm );
     })
 }
 
 function initFromSeeds( seed1, seed2, number = 2, algorithm = '0' ) {
-    api.moreLike( [ seed1 ] ).then((pagesFromFirstSeed) => {
+    api.moreLike( [ seed1 ], algorithm ).then((pagesFromFirstSeed) => {
         const p1 = pagesToTitles( pagesFromFirstSeed );
-        api.moreLike( [ seed2 ] ).then((pagesFromSecondSeed) => {
+        api.moreLike( [ seed2 ], algorithm ).then((pagesFromSecondSeed) => {
             const p2 = pagesToTitles( pagesFromSecondSeed );
             const initialPages = [ seed1, seed2 ].concat(
                 p1.slice( 0, Math.round( number / 2 ) )
