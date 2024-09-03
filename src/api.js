@@ -25,7 +25,13 @@ Let the search engine decide on the best profile to use.
   const mLlQuery = Array.from(titles).sort((a,b) => a < b ? -1 : 1).map((p)=>encodeURIComponent(p)).join('|');
   let profile;
   let searchQuery;
+  let suffix = '';
   switch( algorithm ) {
+    case '2':
+        suffix = '&cirrusMltMaxQueryTerms=10';
+        searchQuery = `morelike%3A${mLlQuery}`;
+        profile = 'classic_noboostlinks';
+        break;
     case '1':
         searchQuery = `morelike%3A${mLlQuery}`;
         profile = 'popular_inclinks';
@@ -34,12 +40,13 @@ Let the search engine decide on the best profile to use.
     default:
         searchQuery = `morelike%3A${mLlQuery}`;
         profile = 'classic_noboostlinks';
+        break;
   }
 
   if ( moreLikeCache[mLlQuery] ) {
     return Promise.resolve( moreLikeCache[mLlQuery] );
   }
-  return fetch(`https://en.m.wikipedia.org/w/api.php?action=query&formatversion=2&origin=*&format=json&smaxage=86400&maxage=86400&origin=*&uselang=content&list=search&formatversion=2&srsearch=${searchQuery}&srnamespace=0&srlimit=6&srqiprofile=${profile}`)  
+  return fetch(`https://en.m.wikipedia.org/w/api.php?action=query&formatversion=2&origin=*&format=json&smaxage=86400&maxage=86400&origin=*&uselang=content&list=search&formatversion=2&srsearch=${searchQuery}&srnamespace=0&srlimit=6&srqiprofile=${profile}${suffix}`)
     .then((r) => r.json())
     .then((j) => {
       const moreLikePages = j.query.search;
