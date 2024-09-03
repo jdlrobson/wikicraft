@@ -14,6 +14,7 @@ const pagesLocal = localStorage.getItem('pages');
 const completedLocal = localStorage.getItem('completed');
 const initialScore = completedLocal ? parseInt(completedLocal) : 0;
 const notFoundLocal = localStorage.getItem('notFound');
+const urlParams = new URLSearchParams(location.search);
 
 const init = ( initialPages, wantedList, algorithm = '0' ) => {
     createApp(App, {
@@ -99,7 +100,11 @@ function initMode( mode = 0, algorithm = 0 ) {
 
 const algorithm = localStorage.getItem('algorithm') || '0';
 const gamepack = localStorage.getItem('gamepack') || '0';
-if ( notFoundLocal && pagesLocal ) {
+const urlTitles = urlParams.getAll('t');
+
+if ( urlTitles ) {
+    initFromInitialPages( urlTitles, algorithm);
+} else if ( notFoundLocal && pagesLocal ) {
     init( JSON.parse( pagesLocal ), JSON.parse( notFoundLocal ) );
 } else {
     initMode( gamepack, algorithm );
