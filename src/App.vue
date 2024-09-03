@@ -13,7 +13,7 @@
         </cdx-button>
       </p>
       <div class="checklist">
-        <p>Checklist</p>
+        <p>Articles to find</p>
         <div class="scrollable">
           <cdx-info-chip v-for="mission in notFound">{{ mission }}</cdx-info-chip>
         </div>
@@ -58,8 +58,8 @@
       </div>
       <div v-else class="help-panel">
         <div v-if="score === 0">
-          <p>Select <strong>two</strong> article titles from the <strong>panel below</strong> to try to make an article that matches an article in the <strong>above checklist</strong>.</p>
-          <p>If you successfully find one of the articles in your checklist above you'll score a point!</p>
+          <p>Select <strong>two</strong> article titles from the <strong>panel below</strong> to try to make an article that matches an article in the <strong>above list of articles to find</strong>.</p>
+          <p>If you successfully find one of the articles above you'll score a point!</p>
         </div>
         <div v-else>
           <p>Your recipe is empty. Select two articles from below.</p>
