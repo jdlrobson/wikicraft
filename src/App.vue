@@ -39,6 +39,7 @@
           <cdx-button :disabled="!board.length || fetchInProgress"
             class="clear" @click="clear">Clear recipe</cdx-button>
         </div>
+        <cdx-message v-if="cannotMix">Cannot mix these pages. Try another pair.</cdx-message>
         <div v-for="page in board" class="scrollable">
           <div v-if="previews[page]">
             <cdx-card :thumbnail="previews[page].thumbnail"
@@ -79,7 +80,8 @@
 <script>
 import { cdxIconShare } from '@wikimedia/codex-icons';
 import api from './api.js';
-import { CdxButton, CdxIcon, CdxCard, CdxInfoChip, CdxTextInput } from '@wikimedia/codex';
+import { CdxButton, CdxIcon, CdxCard,
+  CdxMessage, CdxInfoChip, CdxTextInput } from '@wikimedia/codex';
 import soundLogo from './components/assets/soundlogo.wav';
 import Firework from './components/Firework.vue';
 import { defineComponent, ref, onMounted } from 'vue';
@@ -88,6 +90,7 @@ const score = ref(0);
 let pages = ref([]);
 const previews = ref({});
 const board = ref([]);
+const cannotMix = ref(false);
 const fetchInProgress = ref(false);
 const celebrate = ref(false);
 let notFound = ref([]);
@@ -165,6 +168,7 @@ const startCelebration = () => {
 }
 
 const pushToBoard = ( title, clear = false ) => {
+  cannotMix.value = false;
   if ( clear ) {
     board.value = [];
   }
@@ -181,6 +185,7 @@ const pushToBoard = ( title, clear = false ) => {
 
 export default defineComponent({
   components: {
+    CdxMessage,
     CdxIcon,
     CdxInfoChip,
     CdxButton,
@@ -249,17 +254,26 @@ export default defineComponent({
       board.value = [];
     },
     combine() {
+      cannotMix.value = false;
       moreLike(board.value, this.algorithm).then((moreLikePages) => {
+          if ( !moreLikePages.length ) {
+            cannotMix.value = true;
+            return;
+          }
           const newTitle = moreLikePages[0].title;
           if ( newTitle ) {
             pushToBoard( newTitle, true );
             saveNewTitle( newTitle );
           }
 
-          // add remaining ones to not found.
-          moreLikePages.filter((t)=>t!==newTitle && !pages.value.includes(t)).forEach((page) => {
-            const title = page.title;
-            addToNotFound( title );
+          // check the new title with something random
+          moreLike([
+            newTitle,
+            Array.from( this.pages ) .sort(() => Math.random() < 0.5 ? -1 : 1)[0]
+          ], this.algorithm).then((moreLikePages) => {
+            if ( moreLikePages.length ) {
+              addToNotFound( moreLikePages[0].title );
+            }
           })
       });
     },
@@ -277,6 +291,7 @@ export default defineComponent({
     });
 
     return {
+      cannotMix,
       score,
       fetchInProgress,
       celebrate,
