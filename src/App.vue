@@ -89,6 +89,7 @@ const SHARE_URL = `https://en.wikipedia.org`;
 const score = ref(0);
 let pages = ref([]);
 const previews = ref({});
+const algorithm = ref('0');
 const board = ref([]);
 const cannotMix = ref(false);
 const fetchInProgress = ref(false);
@@ -290,7 +291,9 @@ export default defineComponent({
     onMounted(async () => {
     });
 
+    algorithm.value = props.algorithm;
     return {
+      algorithm,
       cannotMix,
       score,
       fetchInProgress,

@@ -46,11 +46,11 @@ const initFromMostRead = (y, m, d, algorithm) => {
         .then((r) => r.json())
         .then((data) => {
             const topPages = data.items[0].articles.map((t) => t.article.replace( /_/g, ' ')).filter((t) => !t.includes(':') && t!== 'Main Page');
-            initFromInitialPages( topPages.slice(0, 4) );
+            initFromInitialPages( topPages.slice(0, 4), algorithm );
         });
 };
 
-function initMode( mode = 0, algorithm = 0 ) {
+function initMode( mode = 0, algorithm = '0' ) {
     const date = new Date();
     switch( mode ) {
         case '1':
