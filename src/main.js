@@ -37,31 +37,16 @@ function initFromInitialPages( initialPages, algorithm ) {
     })
 }
 
-function initFromSeeds( seed1, seed2, number = 2, algorithm = '0' ) {
-    api.moreLike( [ seed1 ], algorithm ).then((pagesFromFirstSeed) => {
-        const p1 = pagesToTitles( pagesFromFirstSeed );
-        api.moreLike( [ seed2 ], algorithm ).then((pagesFromSecondSeed) => {
-            const p2 = pagesToTitles( pagesFromSecondSeed );
-            const initialPages = [ seed1, seed2 ].concat(
-                p1.slice( 0, Math.round( number / 2 ) )
-            ).concat(
-                p2.slice( 0, Math.round( number / 2 ) )
-            );
-            initFromInitialPages( initialPages );
-        } );
-    });
-}
 
 const initFromMostRead = (y, m, d, algorithm) => {
     const pad = ( num ) => num < 10 ? `0${num}` : `${num}`;
     const prefix = `https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia.org/all-access`;
     const url = `${prefix}/${y}/${pad( m )}/${ pad( d )}`;
-    console.log(url);
     fetch(url)
         .then((r) => r.json())
         .then((data) => {
             const topPages = data.items[0].articles.map((t) => t.article.replace( /_/g, ' ')).filter((t) => !t.includes(':') && t!== 'Main Page');
-            initFromSeeds(topPages[0], topPages[1], 2, algorithm )
+            initFromInitialPages( topPages.slice(0, 4) );
         });
 };
 
