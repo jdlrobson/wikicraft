@@ -26,10 +26,14 @@ async function getLinks(pageTitle) {
     const doc = parser.parseFromString(data.parse.text["*"], "text/html");
 
     // Select all anchor (<a>) elements on the page
-    const links = doc.querySelectorAll("a:not(.mw-disambig):not(.external):not(.external ~ a):not(.mw-redirect):not(.infobox a):not(cite a):not(.refbegin):not(.references a):not(.navbox a)");
+    const links = doc.querySelectorAll("a:not(.hatnote a):not(.ambox a):not(.mw-disambig):not(.external):not(.external ~ a):not(.mw-redirect):not(.infobox a):not(cite a):not(.refbegin):not(.references a):not(.navbox a)");
 
     return Array.from(links).map((link) => link.title).filter((t) => t &&
-      !t.includes(':') && !['Wayback Machine'].includes(t));
+      t !== pageTitle &&
+      !t.includes(':') && ![
+        'Play audio',
+        'Wayback Machine'
+      ].includes(t));
   } catch (error) {
     console.error("Error fetching or parsing page:", error);
   }
@@ -66,8 +70,9 @@ function mostLinks(titles) {
       ) / 2 > (
         countLinksB[a] + countLinksB[b]
       ) ? -1 : 1;
-    });
-    return frequentLinks.slice(0, 5).map((title) => ( { title } ) );
+    }).filter((a) => countLinksA[a] > 1 || countLinksB[a] > 1 )
+    console.log('>>',titles, frequentLinks.slice(0, 1));
+    return frequentLinks.slice(0, 1).map((title) => ( { title } ) );
   })
 }
 function moreLike(titles, algorithm) {
