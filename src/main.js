@@ -38,10 +38,12 @@ function initFromInitialPages( initialPages, algorithm ) {
     Promise.all(
         pairs.map(( pair ) => api.moreLike(pair, algorithm))
     ).then((a) => {
-        init( initialPages,
+        init(
+            initialPages,
             Array.from(
                 new Set( pagesToTitles( [].concat.apply([], a) ), algorithm ) )
-            );
+            ),
+            algorithm
     })
 }
 
@@ -100,9 +102,9 @@ const gamepack = localStorage.getItem('gamepack') || '1';
 const urlTitles = urlParams.getAll('t');
 
 if ( urlTitles.length ) {
-    initFromInitialPages( urlTitles, algorithm);
+    initFromInitialPages( urlTitles, algorithm );
 } else if ( notFoundLocal && pagesLocal ) {
-    init( JSON.parse( pagesLocal ), JSON.parse( notFoundLocal ) );
+    init( JSON.parse( pagesLocal ), JSON.parse( notFoundLocal ), algorithm  );
 } else {
     initMode( gamepack, algorithm );
 }
