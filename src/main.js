@@ -16,7 +16,7 @@ const initialScore = completedLocal ? parseInt(completedLocal) : 0;
 const notFoundLocal = localStorage.getItem('notFound');
 const urlParams = new URLSearchParams(location.search);
 
-const init = ( initialPages, wantedList, algorithm = '0' ) => {
+const init = ( initialPages, wantedList, algorithm ) => {
     createApp(App, {
         wantedList,
         initialScore,
@@ -41,9 +41,10 @@ function initFromInitialPages( initialPages, algorithm ) {
         init(
             initialPages,
             Array.from(
-                new Set( pagesToTitles( [].concat.apply([], a) ), algorithm ) )
+                new Set( pagesToTitles( [].concat.apply([], a) ) )
             ),
             algorithm
+        )
     })
 }
 
@@ -60,7 +61,7 @@ const initFromMostRead = (y, m, d, algorithm) => {
         });
 };
 
-function initMode( mode = 0, algorithm = '0' ) {
+function initMode( mode = 0, algorithm ) {
     const date = new Date();
     switch( mode ) {
         case '1':
@@ -104,7 +105,7 @@ const urlTitles = urlParams.getAll('t');
 if ( urlTitles.length ) {
     initFromInitialPages( urlTitles, algorithm );
 } else if ( notFoundLocal && pagesLocal ) {
-    init( JSON.parse( pagesLocal ), JSON.parse( notFoundLocal ), algorithm  );
+    init( JSON.parse( pagesLocal ), JSON.parse( notFoundLocal ), algorithm );
 } else {
     initMode( gamepack, algorithm );
 }
