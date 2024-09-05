@@ -28,12 +28,20 @@ const init = ( initialPages, wantedList, algorithm = '0' ) => {
 const pagesToTitles = ( pages ) => pages.map(({title}) => title );
 
 function initFromInitialPages( initialPages, algorithm ) {
-    const jumbled = initialPages.sort(() => Math.random() < 0.5 ? -1 : 1);
-    Promise.all( [
-        api.moreLike(jumbled.slice(0,2), algorithm),
-        api.moreLike(jumbled.slice(2), algorithm)
-    ] ).then((a) => {
-        init( initialPages, pagesToTitles( [].concat.apply([], a) ), algorithm );
+    // generate each of the unique pairs
+    const pairs = [];
+    for ( let i = 0; i < initialPages.length; i++ ) {
+        for ( let j = i; j < initialPages.length; j++ ) {
+            pairs.push( [ initialPages[ i ], initialPages[ j ] ] )
+        }
+    }
+    Promise.all(
+        pairs.map(( pair ) => api.moreLike(pair, algorithm))
+    ).then((a) => {
+        init( initialPages,
+            Array.from(
+                new Set( pagesToTitles( [].concat.apply([], a) ), algorithm ) )
+            );
     })
 }
 
