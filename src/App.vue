@@ -333,9 +333,10 @@ header h1 {
 }
 header .scrollable {
   height: 10vh;
+  padding: 20px 0;
 }
 .craftingBoard {
-  height: 50vh;
+  height: 45vh;
   display: flex;
   padding: 10px;
 }
@@ -351,10 +352,11 @@ header .scrollable {
 .inventory {
   border-top: solid 1px black;
   padding: 8px;
-  height: 30vh;
+  height: 35vh;
 }
 .inventory .scrollable {
   height: 15vh;
+  padding: 20px 0;
 }
 .celebration {
   position: absolute;
