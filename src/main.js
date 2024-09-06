@@ -56,8 +56,9 @@ const initFromMostRead = (y, m, d, algorithm) => {
     fetch(url)
         .then((r) => r.json())
         .then((data) => {
-            const topPages = data.items[0].articles.map((t) => t.article.replace( /_/g, ' ')).filter((t) => !t.includes(':') && t!== 'Main Page');
-            initFromInitialPages( topPages.slice(0, 4), algorithm );
+            const topPages = data.items[0].articles.map((t) => t.article.replace( /_/g, ' ')).filter((t) => !t.includes(':') &&
+                ![ 'Cleopatra', 'Main Page' ].includes( t  ));
+            initFromInitialPages( topPages.slice(0, 10), algorithm );
         });
 };
 

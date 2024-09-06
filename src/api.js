@@ -31,6 +31,7 @@ async function getLinks(pageTitle) {
     return Array.from(links).map((link) => link.title).filter((t) => t &&
       t !== pageTitle &&
       !t.includes(':') && ![
+        'Edit this at Wikidata',
         'Play audio',
         'Wayback Machine'
       ].includes(t));
