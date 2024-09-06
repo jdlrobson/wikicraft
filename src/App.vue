@@ -97,8 +97,7 @@ const celebrate = ref(false);
 let notFound = ref([]);
 
 const addToNotFound = ( title ) => {
-  console.log('addToNotFound', title);
-  if ( notFound.value.length < 7 && !notFound.value.includes(title) && !pages.value.includes(title)) {
+  if ( !notFound.value.includes(title) && !pages.value.includes(title)) {
     notFound.value.push(title);
   }
   localStorage.setItem('notFound', JSON.stringify(notFound.value));
